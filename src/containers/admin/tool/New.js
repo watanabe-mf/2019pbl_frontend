@@ -40,7 +40,7 @@ class AdminToolNew extends Component {
 
   render() {
     return(
-      <Main>
+      <React.Fragment>
         <Title>ツール新規登録</Title>
         <ul>
           <Item>
@@ -53,15 +53,12 @@ class AdminToolNew extends Component {
           </Item>
         </ul>
         <Button onClick={ this.handleClick }>登録</Button>
-      </Main>
+      </React.Fragment>
     );
   }
 }
 
 export default AdminToolNew;
-
-const Main = styled.main`
-`
 
 const Title = styled.h1`
   margin-bottom: 30px;
@@ -79,7 +76,7 @@ const Name = styled.p`
 `
 
 const InputText = styled.input`
-  background-color: #f2f2f2;
+  background-color: #fff;
   border: solid 1px #ccc;
   border-radius: 5px;
   padding: 0 10px;
@@ -89,7 +86,7 @@ const InputText = styled.input`
 `
 
 const TextArea = styled.textarea`
-  background-color: #f2f2f2;
+  background-color: #fff;
   border: solid 1px #ccc;
   border-radius: 5px;
   padding: 10px;

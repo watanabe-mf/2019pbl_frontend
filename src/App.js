@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Text from './const/Text';
 import Color from './const/Color';
 
+import AdminToolList from './containers/admin/tool/List';
 import AdminToolNew from './containers/admin/tool/New';
 
 const App = () => (
@@ -23,7 +24,10 @@ const App = () => (
           </Item>
         </List>
       </Nav>
-      <Route exact path='/admin/tool/new' component={ AdminToolNew } />
+      <Main>
+        <Route exact path='/admin/tool/' component={ AdminToolList } />
+        <Route exact path='/admin/tool/new' component={ AdminToolNew } />
+      </Main>
     </Wrap>
   </BrowserRouter>
 );
@@ -43,12 +47,13 @@ const Header = styled.header`
 
 const Wrap = styled.div`
   display: flex;
-  padding: 50px 0;
+  width: 100%;
+  min-height: calc(100vh - 50px);
 `
 
 const Nav = styled.nav`
   width: 300px;
-  padding: 0 50px;
+  padding: 50px;
 `
 
 const List = styled.ul`
@@ -77,4 +82,10 @@ const LinkText = styled(NavLink)`
   &.active {
     font-weight: bold;
   }
+`
+
+const Main = styled.main`
+  padding: 50px;
+  background-color: #f2f2f2;
+  width: calc(100% - 300px);
 `
