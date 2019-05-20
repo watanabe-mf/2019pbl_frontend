@@ -8,6 +8,7 @@ import Color from './const/Color';
 import AdminToolList from './containers/admin/tool/List';
 import AdminToolDetail from './containers/admin/tool/Detail';
 import AdminToolNew from './containers/admin/tool/New';
+import NotFound from './containers/NotFound';
 
 const App = () => (
   <BrowserRouter>
@@ -30,6 +31,7 @@ const App = () => (
         <Route exact path='/admin/tools' component={ AdminToolList } />
         <Route exact path='/admin/tool/new' component={ AdminToolNew } />
         <Route exact path='/admin/tool/:id' component={ AdminToolDetail } />
+        <Route component={ NotFound } />
       </Switch>
       </Main>
     </Wrap>
