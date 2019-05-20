@@ -9,7 +9,8 @@ class AdminToolDetail extends Component {
     super();
     this.state = {
       tool: [],
-      isUpdated: false
+      isUpdated: false,
+      isDeleted: false
     };
   }
 
@@ -41,7 +42,7 @@ class AdminToolDetail extends Component {
     console.log(this.state);
   }
 
-  handleClick = () => {
+  updateData = () => {
     this.setState({
       isUpdated: false
     });
@@ -62,9 +63,25 @@ class AdminToolDetail extends Component {
       });
   }
 
+  deleteData = () => {
+    axios
+      .delete(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tools/${this.props.match.params.id}`)
+      .then(response => {
+        this.setState({
+          isDeleted: true
+        });
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
     return(
       <React.Fragment>
+        { this.state.isDeleted ? <Message text="削除しました。" /> :
+        <React.Fragment>
         { this.state.isUpdated && <Message text="更新しました。" /> }
         <Title>ツール詳細</Title>
         <ul>
@@ -77,7 +94,10 @@ class AdminToolDetail extends Component {
             <TextArea name="detail" onChange={ this.handleChange } value={ this.state.tool.detail } />
           </Item>
         </ul>
-        <Button onClick={ this.handleClick }>更新</Button>
+        <Button onClick={ this.updateData }>更新</Button>
+        <Button onClick={ this.deleteData }>削除</Button>
+        </React.Fragment>
+        }
       </React.Fragment>
     );
   }
