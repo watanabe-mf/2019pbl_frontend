@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import './App.css';
 import styled from 'styled-components';
 import Text from './const/Text';
 import Color from './const/Color';
 
 import AdminToolList from './containers/admin/tool/List';
+import AdminToolDetail from './containers/admin/tool/Detail';
 import AdminToolNew from './containers/admin/tool/New';
 
 const App = () => (
@@ -17,16 +18,19 @@ const App = () => (
       <Nav>
         <List>
           <Item>
-            <LinkText exact to="/admin/tool/">ツール一覧</LinkText>
+            <LinkText to="/admin/tools">ツール一覧</LinkText>
           </Item>
           <Item>
-            <LinkText exact to="/admin/tool/new">ツール新規登録</LinkText>
+            <LinkText to="/admin/tool/new">ツール新規登録</LinkText>
           </Item>
         </List>
       </Nav>
       <Main>
-        <Route exact path='/admin/tool/' component={ AdminToolList } />
+      <Switch>
+        <Route exact path='/admin/tools' component={ AdminToolList } />
         <Route exact path='/admin/tool/new' component={ AdminToolNew } />
+        <Route exact path='/admin/tool/:id' component={ AdminToolDetail } />
+      </Switch>
       </Main>
     </Wrap>
   </BrowserRouter>
