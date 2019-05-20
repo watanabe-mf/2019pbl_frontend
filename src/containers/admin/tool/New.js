@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Color from '../../../const/Color';
+import Message from '../../../components/Message';
 
 class AdminToolNew extends Component {
   constructor() {
@@ -10,7 +11,8 @@ class AdminToolNew extends Component {
       data: {
         name: '',
         detail: ''
-      }
+      },
+      isCreated: false
     }
   }
 
@@ -25,12 +27,19 @@ class AdminToolNew extends Component {
   }
 
   handleClick = () => {
+    this.setState({
+      isCreated: false
+    });
+
     axios
       .post(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tools`, {
         name: this.state.data.name,
         detail: this.state.data.detail
       })
       .then(response => {
+        this.setState({
+          isCreated: true
+        });
         console.log(response);
       })
       .catch(error => {
@@ -41,6 +50,7 @@ class AdminToolNew extends Component {
   render() {
     return(
       <React.Fragment>
+        { this.state.isCreated && <Message text="登録しました。" /> }
         <Title>ツール新規登録</Title>
         <ul>
           <Item>
