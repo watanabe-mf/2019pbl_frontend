@@ -27,16 +27,16 @@ class AdminToolList extends Component {
       .then(response => {
         console.log(response);
         this.setState({
-          tools: response.data
+          tools: response.data,
+          isLoading: false
         });
       })
       .catch(error => {
         console.log(error);
+        this.setState({
+          isLoading: false
+        });
       });
-
-    this.setState({
-      isLoading: false
-    });
   }
 
   render() {
