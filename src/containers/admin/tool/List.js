@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import Loading from '../../../components/Loading';
 
 class AdminToolList extends Component {
   constructor() {
     super();
     this.state = {
-      tools: []
+      tools: [],
+      isLoading: false
     }
   }
 
@@ -16,6 +18,10 @@ class AdminToolList extends Component {
   }
 
   fetchData() {
+    this.setState({
+      isLoading: true
+    });
+
     axios
       .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tools`)
       .then(response => {
@@ -27,12 +33,17 @@ class AdminToolList extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    this.setState({
+      isLoading: false
+    });
   }
 
   render() {
     console.log(this.state.tools);
     return(
       <React.Fragment>
+        <Loading isLoading={ this.state.isLoading } text="読み込み中" />
         <Title>ツール一覧</Title>
         <List>
           { this.state.tools.map(tool => {

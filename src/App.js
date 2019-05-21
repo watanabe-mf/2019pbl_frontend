@@ -4,11 +4,15 @@ import './App.css';
 import styled from 'styled-components';
 import Text from './const/Text';
 import Color from './const/Color';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import AdminToolList from './containers/admin/tool/List';
 import AdminToolDetail from './containers/admin/tool/Detail';
 import AdminToolNew from './containers/admin/tool/New';
 import NotFound from './containers/NotFound';
+
+library.add(faCircleNotch);
 
 const App = () => (
   <BrowserRouter>
