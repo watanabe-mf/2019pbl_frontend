@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 
 import Text from '../const/Text';
 import Color from '../const/Color';
@@ -31,6 +32,8 @@ class Top extends Component {
       })
       .then(response => {
         console.log(response);
+        sessionStorage.setItem('org', JSON.stringify(response.data));
+        this.props.history.push(`/org/${ response.data.name }`);
       })
       .catch(error => {
         console.log(error);
@@ -42,6 +45,8 @@ class Top extends Component {
       .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/organizations/search?name=${this.state.orgName}`)
       .then(response => {
         console.log(response);
+        sessionStorage.setItem('org', JSON.stringify(response.data));
+        this.props.history.push(`/org/${response.data.name}`);
       })
       .catch(error => {
         console.log(error);
@@ -67,7 +72,7 @@ class Top extends Component {
       <Root>
         <Wrap>
           <Title>{ Text.SERVICE_NAME }</Title>
-          <Concept>{ Text.SERVICE_NAME }は組織が使っているツールを可視化し、<br />業務効率化をサポートします。</Concept>
+          <Concept>{ Text.SERVICE_NAME }は組織が使っているツールを<br />一覧で可視化できます。</Concept>
         </Wrap>
         <Wrap>
           <List>
@@ -87,7 +92,7 @@ class Top extends Component {
   }
 }
 
-export default Top;
+export default withRouter(Top);
 
 const Root = styled.div`
   display: flex;
