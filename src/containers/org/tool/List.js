@@ -23,7 +23,7 @@ class OrgToolList extends Component {
     });
 
     axios
-      .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tools`)
+      .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tools`)
       .then(response => {
         console.log(response);
         this.setState({
