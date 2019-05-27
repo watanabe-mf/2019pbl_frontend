@@ -4,7 +4,8 @@ import { BrowserRouter, withRouter, Switch, Route, Redirect, NavLink } from 'rea
 
 import Text from '../const/Text';
 import Color from '../const/Color';
-import OrgToolList from '../containers/org/tool/List';
+import OrgToolRegistered from '../containers/org/tool/Registered';
+import OrgToolUnregistered from '../containers/org/tool/Unregistered';
 
 class OrgLayout extends Component { 
   onClick = () => {
@@ -23,17 +24,18 @@ class OrgLayout extends Component {
           <Nav>
             <List>
               <Item>
-                <LinkText to={`/org/${JSON.parse(sessionStorage.getItem('org')).name }/tools`}>ツール一覧</LinkText>
+                <LinkText to={`/org/${JSON.parse(sessionStorage.getItem('org')).name }/tools/registered`}>登録済ツール一覧</LinkText>
               </Item>
-              {/* <Item>
-                <LinkText to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/new`}>ツール新規登録</LinkText>
-              </Item> */}
+              <Item>
+                <LinkText to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tools/unregistered`}>未登録ツール一覧</LinkText>
+              </Item>
             </List>
           </Nav>
           <Main>
             <Switch>
-              <Route exact path='/org/:org_name/tools' component={ OrgToolList } />
-              <Redirect to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tools`} />
+              <Route exact path='/org/:org_name/tools/registered' component={ OrgToolRegistered } />
+              <Route exact path='/org/:org_name/tools/unregistered' component={ OrgToolUnregistered } />
+              <Redirect to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tools/registered`} />
             </Switch>
         </Main>
         </Wrap>
