@@ -6,6 +6,8 @@ import Text from '../const/Text';
 import Color from '../const/Color';
 import OrgToolRegistered from '../containers/org/tool/Registered';
 import OrgToolUnregistered from '../containers/org/tool/Unregistered';
+import OrgToolRegisteredDetail from '../containers/org/tool/RegisteredDetail';
+import OrgToolUnregisteredDetail from '../containers/org/tool/UnregisteredDetail';
 
 class OrgLayout extends Component { 
   onClick = () => {
@@ -35,6 +37,8 @@ class OrgLayout extends Component {
             <Switch>
               <Route exact path='/org/:org_name/tools/registered' component={ OrgToolRegistered } />
               <Route exact path='/org/:org_name/tools/unregistered' component={ OrgToolUnregistered } />
+              <Route exact path='/org/:org_name/tool/registered/:id' component={ OrgToolRegisteredDetail } />
+              <Route exact path='/org/:org_name/tool/unregistered/:id' component={ OrgToolUnregisteredDetail } />
               <Redirect to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tools/registered`} />
             </Switch>
         </Main>

@@ -40,16 +40,16 @@ class OrgToolRegistered extends Component {
   }
 
   render() {
-    console.log(this.state.tools);
+    console.log(this.state);
     return(
       <React.Fragment>
         <Loading isLoading={ this.state.isLoading } text="読み込み中" />
         <Title>登録済ツール一覧</Title>
         <List>
-          { this.state.tools.map(tool => {
+          { this.state.tools.map(item => {
             return(
-              <Item key={tool.id}>
-                <ItemLink to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/${tool.id}`}>{ tool.name }</ItemLink>
+              <Item key={item.id}>
+                <ItemLink to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/registered/${item.id}`}>{ item.tool.name }</ItemLink>
               </Item>
             );
           }) }

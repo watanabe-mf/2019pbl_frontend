@@ -49,7 +49,7 @@ class OrgToolUnregistered extends Component {
           { this.state.tools.map(tool => {
             return(
               <Item key={tool.id}>
-                <ItemLink to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/${tool.id}`}>{ tool.name }</ItemLink>
+                <ItemLink to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/unregistered/${tool.id}`}>{ tool.name }</ItemLink>
               </Item>
             );
           }) }
