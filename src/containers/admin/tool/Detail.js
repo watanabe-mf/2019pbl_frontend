@@ -151,4 +151,8 @@ const Button = styled.button`
   font-weight: bold;
   color: #fff;
   cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
 `
