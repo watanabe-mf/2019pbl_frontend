@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Loading from '../../../components/Loading';
+import ToolCard from '../../../components/ToolCard';
 
 class OrgToolRegistered extends Component {
   constructor() {
     super();
     this.state = {
       tools: [],
-      isLoading: false
+      isLoading: false,
+      searchValue: ''
     }
   }
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  setSearchValue = event => {
+    this.setState({
+      searchValue: event.target.value,
+      isLoading: true
+    });
+
+    if(event.target.value === '') {
+      this.fetchData();
+    } else {
+      this.searchData();
+    }
   }
 
   fetchData() {
@@ -39,17 +53,36 @@ class OrgToolRegistered extends Component {
       });
   }
 
+  searchData() {
+    axios
+      .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tools/search?name=${this.state.searchValue}`)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          tools: response.data,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false
+        });
+      });
+  }
+
   render() {
     console.log(this.state);
     return(
       <React.Fragment>
         <Loading isLoading={ this.state.isLoading } text="読み込み中" />
         <Title>登録済ツール一覧</Title>
+        <Search placeholder="ツール名で検索" value={ this.state.searchValue } onChange={ this.setSearchValue } />
         <List>
           { this.state.tools.map(item => {
             return(
               <Item key={item.id}>
-                <ItemLink to={`/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/registered/${item.id}`}>{ item.tool.name }</ItemLink>
+                <ToolCard to={ `/org/${JSON.parse(sessionStorage.getItem('org')).name}/tool/registered/${item.id}` } value={ item.tool.name } />
               </Item>
             );
           }) }
@@ -67,6 +100,20 @@ const Title = styled.h1`
   color: #333;
 `
 
+const Search = styled.input`
+  width: 800px;
+  height: 40px;
+  border: solid 1px #ccc;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 2rem;
+  outline: 0;
+
+  &:focus {
+    border: solid 3px #ccc;
+  }
+`
+
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -74,15 +121,4 @@ const List = styled.ul`
 
 const Item = styled.li`
   margin: 30px;
-  border-radius: 5px;
-  background-color: #fff;
-  width: 300px;
-  font-size: 3rem;
-  font-weight: bold;
-`
-
-const ItemLink = styled(Link)`
-  display: block;
-  padding: 20px;
-  color: #333;
 `

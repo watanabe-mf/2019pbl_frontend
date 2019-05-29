@@ -60,7 +60,7 @@ class OrgToolUnregisteredDetail extends Component {
           isUpdated: true
         });
         console.log(response);
-        this.props.history.push(`/org/${JSON.parse(sessionStorage.getItem('org')).id}/tool/registered/${this.props.match.params.id}`)
+        this.props.history.push(`/org/${JSON.parse(sessionStorage.getItem('org')).id}/tool/registered/${response.data.id}`)
       })
       .catch(error => {
         console.log(error);
