@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Loading from '../../../components/Loading';
+import ToolCard from '../../../components/ToolCard';
 
 class AdminToolList extends Component {
   constructor() {
@@ -49,7 +49,7 @@ class AdminToolList extends Component {
           { this.state.tools.map(tool => {
             return(
               <Item key={tool.id}>
-                <ItemLink to={ `/admin/tool/${tool.id}` }>{ tool.name }</ItemLink>
+                <ToolCard to={ `/admin/tool/${tool.id}` } value={ tool.name } />
               </Item>
             );
           }) }
@@ -74,15 +74,4 @@ const List = styled.ul`
 
 const Item = styled.li`
   margin: 30px;
-  border-radius: 5px;
-  background-color: #fff;
-  width: 300px;
-  font-size: 3rem;
-  font-weight: bold;
-`
-
-const ItemLink = styled(Link)`
-  display: block;
-  padding: 20px;
-  color: #333;
 `
