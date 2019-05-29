@@ -19,7 +19,8 @@ class OrgLayout extends Component {
     return (
       <BrowserRouter>
         <Header>
-          <HeaderTitle>{ Text.SERVICE_NAME }: { JSON.parse(sessionStorage.getItem('org')).name }</HeaderTitle>
+          <HeaderTitle>{ Text.SERVICE_NAME }</HeaderTitle>
+          <Org>組織：{ JSON.parse(sessionStorage.getItem('org')).name }</Org>
           <Logout onClick={ this.onClick }>ログアウト</Logout>
         </Header>
         <Wrap>
@@ -52,7 +53,7 @@ export default withRouter(OrgLayout);
 
 const Header = styled.header`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   background-color: ${ Color.PRIMARY };
   padding: 0 50px;
@@ -61,17 +62,26 @@ const Header = styled.header`
 `
 
 const HeaderTitle = styled.p`
-  line-height: 50px;
+  margin-right: auto;
   font-size: 3rem;
   font-weight: bold;
   color: #fff;
 `
 
-const Logout = styled.button`
+const Org = styled.p`
+  margin-right: 20px;
   font-size: 2rem;
-  border: none;
-  border-radius: 5px;
-  padding: 0 10px;
+  font-weight: bold;
+  color: #fff;
+`
+
+const Logout = styled.button`
+  border: solid 1px #ccc;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+  padding: 0 15px;
+  height: 30px;
+  font-size: 1.6rem;
   cursor: pointer;
 `
 
