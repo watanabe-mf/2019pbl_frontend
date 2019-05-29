@@ -26,7 +26,6 @@ const Root = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100vh;
 `
@@ -34,10 +33,10 @@ const Root = styled.div`
 const Icon = styled(FontAwesomeIcon)`
   margin-bottom: 20px;
   font-size: 5rem;
-  color: #fff;
+  color: #05a19c;
 `
 
 const Text = styled.p`
   font-size: 2rem;
-  color: #fff;
+  color: #05a19c;
 `
