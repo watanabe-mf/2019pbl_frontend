@@ -51,12 +51,14 @@ const Header = styled.header`
 const Wrap = styled.div`
   display: flex;
   width: 100%;
-  min-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
 `
 
 const Nav = styled.nav`
   width: 300px;
+  height: 100%;
   padding: 50px;
+  overflow-y: scroll;
 `
 
 const List = styled.ul`
@@ -91,4 +93,6 @@ const Main = styled.main`
   padding: 50px;
   background-color: #f2f2f2;
   width: calc(100% - 300px);
+  height: 100%;
+  overflow-y: scroll;
 `
