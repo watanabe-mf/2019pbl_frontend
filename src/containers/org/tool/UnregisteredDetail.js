@@ -4,6 +4,7 @@ import axios from 'axios';
 import Color from '../../../const/Color';
 import { withRouter } from 'react-router';
 import SearchWindow from '../../../components/form/SearchWindow';
+import Tag from '../../../components/Tag';
 
 class OrgToolUnregisteredDetail extends Component {
   constructor() {
@@ -197,13 +198,15 @@ class OrgToolUnregisteredDetail extends Component {
                 }
               })() }
             </SearchArea>
-            <ul>
+            <TagList>
               { this.state.selectTags.map(item => {
                 return(
-                  <li key={item.id}>{ item.name }</li>
+                  <li key={item.id}>
+                    <Tag text={ item.name } />
+                  </li>
                 );
               }) }
-            </ul>
+            </TagList>
           </Item>
         </ul>
         <Button onClick={ this.createData }>登録</Button>
@@ -296,4 +299,8 @@ const SearchResultAction = styled.button`
   color: #fff;
   font-size: 1.6rem;
   cursor: pointer;
+`
+
+const TagList = styled.ul`
+  display: flex;
 `

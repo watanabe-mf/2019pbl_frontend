@@ -4,6 +4,7 @@ import axios from 'axios';
 // import Color from '../../../const/Color';
 import Message from '../../../components/Message';
 import Datetime from '../../../components/Datetime';
+import Tag from '../../../components/Tag';
 
 class OrgToolRegisteredDetail extends Component {
   constructor() {
@@ -105,7 +106,7 @@ class OrgToolRegisteredDetail extends Component {
             <Name>追加タグ</Name>
             <Text>{ this.state.tags.map(item => {
               return(
-                <div key={item.id}>{ item.organizationTag.name }</div>
+                <Tag key={item.id} text={ item.organizationTag.name } />
               );
             }) }</Text>
           </Item>
