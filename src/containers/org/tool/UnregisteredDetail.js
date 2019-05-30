@@ -3,13 +3,17 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Color from '../../../const/Color';
 import { withRouter } from 'react-router';
+import SearchWindow from '../../../components/form/SearchWindow';
 
 class OrgToolUnregisteredDetail extends Component {
   constructor() {
     super();
     this.state = {
       baseData: [],
-      additional_information: ''
+      fetchTags: [],
+      selectTags: [],
+      additional_information: '',
+      searchValue: ''
     };
   }
 
@@ -49,7 +53,7 @@ class OrgToolUnregisteredDetail extends Component {
       additional_information: this.state.additional_information,
       is_approved: 'yes',
       last_updated_user_id: 1
-    }
+    };
 
     console.log('params', params);
 
@@ -60,11 +64,87 @@ class OrgToolUnregisteredDetail extends Component {
           isUpdated: true
         });
         console.log(response);
-        this.props.history.push(`/org/${JSON.parse(sessionStorage.getItem('org')).id}/tool/registered/${response.data.id}`)
+        this.insertTags(response.data.id);
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  setSearchValue = event => {
+    this.setState({
+      searchValue: event.target.value
+    });
+
+    this.searchTag();
+  }
+
+  searchTag() {
+    axios
+      .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tags/search?name=${this.state.searchValue}`)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          fetchTags: response.data,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false
+        });
+      });
+  }
+
+  selectTag(id, name) {
+    const selectTags = this.state.selectTags.concat({
+      id: id,
+      name: name
+    });
+    this.setState({
+      selectTags: selectTags,
+      searchValue: ''
+    });
+  }
+
+  createTag = () => {
+    const params = {
+      organization_id: JSON.parse(sessionStorage.getItem('org')).id,
+      name: this.state.searchValue
+    };
+
+    axios
+      .post(`${process.env.REACT_APP_BASE_API_ENDPOINT}/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tags`, params)
+      .then(response => {
+        console.log(response);
+        this.selectTag(response.data.id, response.data.name);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  insertTags(tool_id) {
+    for(let i in this.state.selectTags) {
+      const taggingParams = {
+        organization_tool_id: tool_id,
+        organization_tag_id: this.state.selectTags[i].id
+      };
+
+      console.log('tagging', taggingParams);
+
+      axios
+        .post(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tagging/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tools`, taggingParams)
+        .then(response => {
+          console.log(response);
+          this.props.history.push(`/org/${JSON.parse(sessionStorage.getItem('org')).id}/tool/registered/${tool_id}`)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    }
   }
 
   render() {
@@ -79,6 +159,51 @@ class OrgToolUnregisteredDetail extends Component {
           <Item>
             <Name>追加情報</Name>
             <TextArea name="additional_information" onChange={ this.handleChange } value={ this.state.additional_information } />
+          </Item>
+          <Item>
+            <Name>追加タグ</Name>
+            <SearchArea>
+              <SearchWindow placeholder="タグを検索" width="500px" value={ this.state.searchValue } onChange={ this.setSearchValue } />
+              { (() => {
+                if(this.state.searchValue !== '') {
+                  return(
+                    <SearchResultList>
+                      { this.state.fetchTags.map(item => {
+                        return(
+                          <SearchResultItem key={item.id}>
+                            <SearchResultText>{ item.name }</SearchResultText>
+                            { (() => {
+                              if((this.state.selectTags.findIndex(obj => obj.id === item.id)) !== -1) {
+                                return <SearchResultAction>選択済</SearchResultAction>
+                              } else {
+                                return <SearchResultAction onClick={ () => this.selectTag(item.id, item.name) }>選択</SearchResultAction>
+                              }
+                            })() }
+                          </SearchResultItem>
+                        )
+                      }) }
+                      { (() => {
+                        if(this.state.fetchTags.length === 0) {
+                          return(
+                            <SearchResultItem>
+                              <SearchResultText>タグが見つかりません</SearchResultText>
+                              <SearchResultAction onClick={ this.createTag }>新規登録して選択</SearchResultAction>
+                            </SearchResultItem>
+                          );
+                        }
+                      })() }
+                    </SearchResultList>
+                  );
+                }
+              })() }
+            </SearchArea>
+            <ul>
+              { this.state.selectTags.map(item => {
+                return(
+                  <li key={item.id}>{ item.name }</li>
+                );
+              }) }
+            </ul>
           </Item>
         </ul>
         <Button onClick={ this.createData }>登録</Button>
@@ -131,5 +256,44 @@ const Button = styled.button`
   font-size: 1.6rem;
   font-weight: bold;
   color: #fff;
+  cursor: pointer;
+`
+
+const SearchArea = styled.div`
+  position: relative;
+  margin-bottom: 30px;
+  width: 500px;
+`
+
+const SearchResultList = styled.ul`
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  width: 100%;
+`
+
+const SearchResultItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: solid 1px #ccc;
+  padding: 0 20px;
+  width: 100%;
+  height: 40px;
+`
+
+const SearchResultText = styled.p`
+  font-size: 1.6rem;
+`
+
+const SearchResultAction = styled.button`
+  border: none;
+  border-radius: 5px;
+  background-color: ${ Color.PRIMARY };
+  padding: 0 10px;
+  color: #fff;
+  font-size: 1.6rem;
   cursor: pointer;
 `

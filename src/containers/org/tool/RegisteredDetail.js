@@ -11,6 +11,7 @@ class OrgToolRegisteredDetail extends Component {
     this.state = {
       baseData: [],
       orgData: [],
+      tags: [],
       isUpdated: false,
       isDeleted: false
     };
@@ -28,6 +29,18 @@ class OrgToolRegisteredDetail extends Component {
         this.setState({
           baseData: response.data.tool,
           orgData: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    axios
+      .get(`${process.env.REACT_APP_BASE_API_ENDPOINT}/tagging/organization/${JSON.parse(sessionStorage.getItem('org')).id}/tools/${this.props.match.params.id}`)
+      .then(response => {
+        console.log('tags', response);
+        this.setState({
+          tags: response.data
         });
       })
       .catch(error => {
@@ -88,6 +101,14 @@ class OrgToolRegisteredDetail extends Component {
         { this.state.isUpdated && <Message text="更新しました。" /> }
         <Title>{ this.state.baseData.name }</Title>
         <ul>
+          <Item>
+            <Name>追加タグ</Name>
+            <Text>{ this.state.tags.map(item => {
+              return(
+                <div key={item.id}>{ item.organizationTag.name }</div>
+              );
+            }) }</Text>
+          </Item>
           <Item>
             <Name>詳細情報</Name>
             <Text>{ this.state.baseData.detail }</Text>

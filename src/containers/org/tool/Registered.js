@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Loading from '../../../components/Loading';
 import ToolCard from '../../../components/ToolCard';
+import SearchWindow from '../../../components/form/SearchWindow';
 
 class OrgToolRegistered extends Component {
   constructor() {
@@ -77,7 +78,7 @@ class OrgToolRegistered extends Component {
       <React.Fragment>
         <Loading isLoading={ this.state.isLoading } text="読み込み中" />
         <Title>登録済ツール一覧</Title>
-        <Search placeholder="ツール名で検索" value={ this.state.searchValue } onChange={ this.setSearchValue } />
+        <SearchWindow value={ this.state.searchValue } placeholder="ツール名で検索" onChange={ this.setSearchValue } />
         <List>
           { this.state.tools.map(item => {
             return(
@@ -98,20 +99,6 @@ const Title = styled.h1`
   margin-bottom: 30px;
   font-size: 3rem;
   color: #333;
-`
-
-const Search = styled.input`
-  width: 800px;
-  height: 40px;
-  border: solid 1px #ccc;
-  border-radius: 20px;
-  padding: 20px;
-  font-size: 2rem;
-  outline: 0;
-
-  &:focus {
-    border: solid 3px #ccc;
-  }
 `
 
 const List = styled.ul`
